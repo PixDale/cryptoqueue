@@ -1,4 +1,4 @@
-# cryptoqueue
+# CryptoQueue
 
 Implementação de um sistema de criptografia usando Fila Circular
 
