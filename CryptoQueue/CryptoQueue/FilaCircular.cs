@@ -4,22 +4,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProvaM1Lista
+namespace CryptoQueue
 {
     //Implementar lista circular duplamente ligada.
-    public class ListaCircular
+    public class FilaCircular
     {
         private Node fim;
-        private int size=0;
-        public ListaCircular()
+        private int size = 0;
+
+        public FilaCircular()
         {
             fim = null;
+        }
+        public Char getNode(int indice)
+        {
+            if(indice <= size)
+            {
+                Node nodeaux = fim.Next;
+                if (indice == 0)
+                {
+                    return nodeaux.Info;
+                }
+                for (int i = 1; i <= indice; i++)
+                {
+                    nodeaux = nodeaux.Next;
+                }
+                return nodeaux.Info;
+            }
+            else
+            {
+                return (char)20;
+            }
+            
         }
         public bool isEmpty()
         {
             return fim == null;
         }
-        public void inicializarLista(String x)
+        public int getSize()
+        {
+            return size;
+        }
+        public void inicializarLista(Char x)
         {
             Node aux = new Node();
             aux.Info = x;
@@ -30,7 +56,7 @@ namespace ProvaM1Lista
         }
 
         //Adicionar o item ao final da lista.
-        public void Adicionar(String item)
+        public void Adicionar(Char item)
         {
             if(isEmpty()){
                 inicializarLista(item);
@@ -90,9 +116,9 @@ namespace ProvaM1Lista
         }
 
         //Retornar a lista de items da lista.
-        public string[] Items()
+        public Char[] Items()
         {
-            string[] listaItems = new string[size];
+            Char[] listaItems = new Char[size];
             Node aux = new Node();
             aux = fim.Next;
 
@@ -109,7 +135,27 @@ namespace ProvaM1Lista
                 }
                 return listaItems;
             }
-            return null;
+        }
+        public int[] ItemsToInt()
+        {
+            int[] listaItems = new int[size];
+            Node aux = new Node();
+            aux = fim.Next;
+
+            if (isEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                for (int i = 0; i < size; i++)
+                {
+                    listaItems[i] = (int)aux.Info;
+                    Console.Write(listaItems[i]+" - ");
+                    aux = aux.Next;
+                }
+                return listaItems;
+            }
         }
 
     }

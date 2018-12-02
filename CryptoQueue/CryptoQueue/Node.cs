@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProvaM1Lista
+namespace CryptoQueue
 {
     class Node
     {
-        private String info;
+        private Char info;
         private Node next;
         private Node back;
 
-        public String Info
+        public Char Info
         {
             get { return info; }
             set { info = value; }
