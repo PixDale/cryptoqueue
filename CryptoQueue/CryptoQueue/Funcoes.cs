@@ -29,7 +29,7 @@ namespace CryptoQueue
             //Implementar conversor de formato fibonacci para binario
             return 0;
         }
-        public static  String  FibFormat (uint num)
+        public static  String  DecToFibFormat (uint num)
         {
             IList<uint> numerosFib = new List<uint>();
             uint posicaoFib = 1;
@@ -58,22 +58,42 @@ namespace CryptoQueue
             //string resultInverso = new string(result.Reverse().ToArray());
             return result;           
         }
+        public static uint FibToDecFormat(uint num)
+        {
+            uint result = 0;
+            uint indiceFibAtual = 1;
+            uint fibAtual = Fib(indiceFibAtual);
+            string numBinario = Convert.ToString(num, 2);
+            uint aux;
+            for(int i = numBinario.Length-1; i > 0; i--)
+            {
+                aux = (uint)(numBinario[i] - '0');
+                result += (aux * Fib((uint)i));
+            }
 
-        public static string Criptografar(string msg, uint tam, uint giro)
+
+
+            return result;
+        }
+
+        public static string Criptografar(string msg, uint tam, int chave)
         {
             FilaCircular filaChave = new FilaCircular();
             FilaCircular filaMensagem = new FilaCircular();
-            FilaCircular filaXorada = new FilaCircular();
+            int[] vetorXored = new int[tam];
+            FilaCircular filaMsgCriptografada = new FilaCircular();
 
             //Preencher a fila chave com as letras do alfabeto
             for(int i=0, aux=0; i<tam; i++, aux++)
             {
-                if(aux > 26)
+                if(aux > 25)
                 {
                     aux = 0;
                 }
                 filaChave.Adicionar((Char)(65+aux));
             }
+            int giro = chave - 65;
+            filaChave.Girar(giro);
 
             //Prencher a fila mensagem com a msg
             for(int i=0; i<msg.Length; i++)
@@ -88,10 +108,26 @@ namespace CryptoQueue
             {
                 int letra = (int)filaChave.getNode(i) ^ (int)filaMensagem.getNode(i);
 
-                filaXorada.Adicionar((Char)letra);
+                vetorXored[i]= letra;
             }
-            Console.WriteLine(filaXorada.Items());
-            Console.WriteLine("\n"+filaXorada.ItemsToInt());
+            int[] vetorXoredFib = new int[tam];
+            for(int i=0; i<tam; i++)
+            {
+                vetorXoredFib[i] = Convert.ToInt32(DecToFibFormat((uint)vetorXored[i]), 2);
+            }
+            foreach(int i in vetorXoredFib)
+            {
+                filaMsgCriptografada.Adicionar((Char)i);
+            }
+            Console.WriteLine(filaMsgCriptografada.Items());
+
+            return Convert.ToString(filaMsgCriptografada.Items());
+        }
+        public static string Descriptografar(string msg, uint tam, int chave)
+        {
+
+
+
 
             return null;
         }
