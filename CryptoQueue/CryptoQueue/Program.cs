@@ -24,23 +24,17 @@ namespace CryptoQueue
             } while (chave < 'A' || chave > 'Z');
             
 
-            FilaCircular filaTeste = new FilaCircular();
-            filaTeste.Adicionar('A');
-            filaTeste.Adicionar('B');
-            filaTeste.Adicionar('C');
-            filaTeste.Adicionar('D');
-            filaTeste.Adicionar('E');
-            Console.WriteLine(filaTeste.Items());
-            Console.WriteLine(filaTeste.getNode(0));
-            Console.WriteLine(filaTeste.getNode(1));
-            Console.WriteLine(filaTeste.getNode(2));
-            Console.ReadKey();
 
-            string teste = Funcoes.Criptografar("ALI@ABOOD", (uint)tamanhoFila, chave);
-            string testeconv = Funcoes.DecToFibFormat(12);
-            Console.WriteLine("\n"+testeconv);
-            uint testeconv2 = Funcoes.FibToDecFormat((uint)Convert.ToInt32(testeconv));
-            Console.WriteLine(testeconv2);
+            int[] msg = Funcoes.Criptografar("ALI@ABOOD", (uint)tamanhoFila, chave);
+
+            string result = Funcoes.Descriptografar(msg, (uint)tamanhoFila, chave);
+
+            msg.ToList().ForEach(Console.Write);
+
+            string teste = "OLAOLAOLA";
+
+            Console.WriteLine("\n\nresult==" + result);
+            Console.WriteLine("\n\nresult==" + teste);
             Console.ReadKey();
         }
     }
