@@ -10,32 +10,79 @@ namespace CryptoQueue
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Digite o tamanho da Fila: ");
-            int tamanhoFila = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Digite a letra inicial sequencia Chave (A~Z): ");
+            string mensagem;
             Char chave;
-            do
-            {
-                chave = Console.ReadLine()[0]; //Retorna a primeira letra da string
-                if(chave >= 'a' && chave <= 'z') // Faz um toUpper na letra
-                {
-                    chave = (char)((int)chave - 32);
+            int op = 0;
+
+            do{
+                Console.WriteLine("Escolha uma opção:\n [1] - Criptografa uma Mensagem.\n[2] - Descriptografar uma Mensagem. ");
+            op = Convert.ToInt32(Console.ReadLine());
+            switch(op) {
+                case 1:
+                    Console.WriteLine("Digite a Mensagem: ");
+                    mensagem = Console.ReadLine();
+                    Console.WriteLine("Digite a letra inicial sequencia Chave (A~Z): ");
+                    do
+                    {
+                        chave = Console.ReadLine()[0]; //Retorna a primeira letra da string
+                        if(chave >= 'a' && chave <= 'z') // Faz um toUpper na letra
+                        {
+                            chave = (char)((int)chave - 32);
+                        }
+                    } while (chave < 'A' || chave > 'Z');
+
+                   Console.WriteLine("Digite o caminho para salvar a mensagem criptografada: ");
+                   string cam = Console.ReadLine();
+
+                    string msg = Funcoes.Criptografar(mensagem, chave);
+                    Console.WriteLine(msg);
+
+                    break;
+             case 2:
+                    Console.WriteLine("Digite a Mensagem Criptografada: ");
+                    mensagem = Console.ReadLine();
+                    Console.WriteLine("Digite a letra inicial sequencia Chave (A~Z): ");
+                    do
+                    {
+                        chave = Console.ReadLine()[0]; //Retorna a primeira letra da string
+                        if(chave >= 'a' && chave <= 'z') // Faz um toUpper na letra
+                        {
+                            chave = (char)((int)chave - 32);
+                        }
+                    } while (chave < 'A' || chave > 'Z');
+
+                    string result = Funcoes.Descriptografar(mensagem, chave);
+                        Console.WriteLine(result);
+
+                    break;
+             case 4:
+                        
+                string teste = "C:/Users/felipe/Documents/arquivinho.txt";
+                string msg1 = "OLA MUNDO";
+                string cripto = Funcoes.Criptografar(msg1, 65);
+                string teste2 = System.IO.File.ReadAllText(teste);
+                        Console.WriteLine("---ARQ---"+teste2);
+                        Console.WriteLine("---RESULT"+cripto);
+                        if(cripto.Equals(teste2)){
+                            Console.WriteLine("TRUE");
+                        } else  
+                            Console.WriteLine("FALSE");
+                string decript = Funcoes.Descriptografar(teste2, 65);
+                        Console.WriteLine(decript);
+break;
                 }
-            } while (chave < 'A' || chave > 'Z');
+                
+            } while(op != 3);
+
+            
+
             
 
 
-            int[] msg = Funcoes.Criptografar("ALI@ABOOD", (uint)tamanhoFila, chave);
 
-            string result = Funcoes.Descriptografar(msg, (uint)tamanhoFila, chave);
+            //msg.ToList().ForEach(Console.Write);
 
-            msg.ToList().ForEach(Console.Write);
 
-            string teste = "OLAOLAOLA";
-
-            Console.WriteLine("\n\nresult==" + result);
-            Console.WriteLine("\n\nresult==" + teste);
-            Console.ReadKey();
         }
     }
 }

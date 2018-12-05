@@ -61,8 +61,9 @@ namespace CryptoQueue
             return result;
         }
 
-        public static int[] Criptografar(string msg, uint tam, int chave)
+        public static string Criptografar(string msg, int chave)
         {
+            int tam = msg.Length;
             FilaCircular filaChave = new FilaCircular();
             FilaCircular filaMensagem = new FilaCircular();
             int[] vetorXored = new int[tam];
@@ -103,21 +104,26 @@ namespace CryptoQueue
             {
                 filaMsgCriptografada.Adicionar((Char)i);
             }
-            int[] result = new int[tam];
-            for (int i = 0; i< tam; i++)
+            string result = "";
+            for (int i = 0; i < tam; i++)
             {
-                result[i] = filaMsgCriptografada.getNode(i);
+                result += filaMsgCriptografada.getNode(i);
+
             }
+            Console.WriteLine("É PRA RETORNAR CHARES = "+result);
+            System.IO.File.WriteAllText(caminho+"/msgCriptografada.txt", result);
             return result;
         }
 
-        public static string Descriptografar(int[] msg, uint tam, int chave)
+
+
+        public static string Descriptografar(string msg, int chave)
         {
+            int tam = msg.Length;
             FilaCircular filaChave = new FilaCircular();
             FilaCircular filaMsgCriptografada = new FilaCircular();
             int[] vetorXored = new int[tam];
             int[] vetorDesXored = new int[tam];
-            Console.WriteLine("TAM = " + tam + " - MSG LENGTH = " + msg.Length);
 
             //Preencher a fila chave com as letras do alfabeto
             for (int i = 0, aux = 0; i < tam; i++, aux++)
@@ -151,5 +157,19 @@ namespace CryptoQueue
             return new string(mensagemFinal.Items());
         }
 
-    }
+        static string ConsertaCaminho(string caminho){  
+            string aux = "";
+            foreach (char c in caminho) {
+                if(c.Equals('\\')) {
+                    aux += '/';
+                } else {
+                    aux += c;
+                }
+                if(aux[aux.Length-1].Equals('/')){
+                    aux.Remove(aux.Length-1);
+                }
+            }
+            return aux;
+        }
+}
 }
