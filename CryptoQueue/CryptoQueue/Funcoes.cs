@@ -61,9 +61,8 @@ namespace CryptoQueue
             return result;
         }
 
-        public static string Criptografar(string msg, int chave, string caminho)
+        public static string Criptografar(string msg, int chave)
         {
-            try{
             int tam = msg.Length;
             FilaCircular filaChave = new FilaCircular();
             FilaCircular filaMensagem = new FilaCircular();
@@ -105,27 +104,19 @@ namespace CryptoQueue
             {
                 filaMsgCriptografada.Adicionar((Char)i);
             }
-            string result = "";
+                int[] result = new int[tam];
             for (int i = 0; i < tam; i++)
             {
-                result += filaMsgCriptografada.getNode(i);
-
+                result[i] = filaMsgCriptografada.getNode(i);
             }
-  
-            System.IO.File.WriteAllText(caminho+"/msgCriptografada.txt", result);
-            return result;
-            }catch(Exception e){
-             return "Caminho invalido";
-                }
+            return FormatarCifraSaida(result);
          }
         
 
 
-
-        public static string Descriptografar(string caminho, int chave)
+        public static string Descriptografar(string msgCripto, int chave)
         {
-            try{
-            string msg = System.IO.File.ReadAllText(caminho);
+            int[] msg = FormatarCifraEntrada(msgCripto);
             int tam = msg.Length;
             FilaCircular filaChave = new FilaCircular();
             FilaCircular filaMsgCriptografada = new FilaCircular();
@@ -161,11 +152,11 @@ namespace CryptoQueue
             {
                 mensagemFinal.Adicionar((char)i);
             }
-            return new string(mensagemFinal.Items());
-            }catch(Exception e){
-}                   return "Arquivo nao encontrado";
-        }
 
+            return new string(mensagemFinal.Items());
+
+        }
+        /*
         static string ConsertaCaminho(string caminho){  
             string aux = "";
             foreach (char c in caminho) {
@@ -173,12 +164,59 @@ namespace CryptoQueue
                     aux += '/';
                 } else {
                     aux += c;
-                }
-                if(aux[aux.Length-1].Equals('/')){
-                    aux.Remove(aux.Length-1);
-                }
+                } 
+            }
+            if (aux[aux.Length - 1].Equals('/')) {
+                aux.Remove(aux.Length - 1);
             }
             return aux;
+        }
+        */
+        public static int ContarDigitos (int num)
+        {
+            if (num / 10000 >= 1)
+                return 5;
+            else if (num / 1000 >= 1)
+                return 4;
+            else if (num / 100 >= 1)
+                return 3;
+            else if (num / 10 >= 1)
+                return 2;
+            else
+                return 1;
+
+        }
+
+        public static string FormatarCifraSaida(int[] vet)
+        {
+            string saida = "";
+            for (int i = 0; i< vet.Length; i++)
+            {
+                saida += ContarDigitos(vet[i]);
+                saida += vet[i];
+            }
+
+            return saida;
+        }
+        public static int[] FormatarCifraEntrada(string msg)
+        {
+
+            List<int> listaSaida = new List<int>();
+            string numaux = "";
+            for (int i = 0; i < msg.Length; i++)
+            {
+                int tamaux = msg[i] - '0';
+                
+                for(int j = 1; j <= tamaux; j++)
+                {
+                    numaux += msg[++i];
+                }
+                int numPraSalvar = Convert.ToInt32(numaux);
+                listaSaida.Add(numPraSalvar);
+                numaux = "";
+            }
+            int[] saida = listaSaida.ToArray();
+            return saida;
         }
     }
  }
