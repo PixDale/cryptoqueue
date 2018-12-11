@@ -61,8 +61,9 @@ namespace CryptoQueue
             return result;
         }
 
-        public static string Criptografar(string msg, int chave)
+        public static string Criptografar(string msg, int chave, string caminho)
         {
+            try{
             int tam = msg.Length;
             FilaCircular filaChave = new FilaCircular();
             FilaCircular filaMensagem = new FilaCircular();
@@ -110,15 +111,21 @@ namespace CryptoQueue
                 result += filaMsgCriptografada.getNode(i);
 
             }
-            Console.WriteLine("É PRA RETORNAR CHARES = "+result);
+  
             System.IO.File.WriteAllText(caminho+"/msgCriptografada.txt", result);
             return result;
-        }
+            }catch(Exception e){
+             return "Caminho invalido";
+                }
+         }
+        
 
 
 
-        public static string Descriptografar(string msg, int chave)
+        public static string Descriptografar(string caminho, int chave)
         {
+            try{
+            string msg = System.IO.File.ReadAllText(caminho);
             int tam = msg.Length;
             FilaCircular filaChave = new FilaCircular();
             FilaCircular filaMsgCriptografada = new FilaCircular();
@@ -155,6 +162,8 @@ namespace CryptoQueue
                 mensagemFinal.Adicionar((char)i);
             }
             return new string(mensagemFinal.Items());
+            }catch(Exception e){
+}                   return "Arquivo nao encontrado";
         }
 
         static string ConsertaCaminho(string caminho){  
@@ -171,5 +180,7 @@ namespace CryptoQueue
             }
             return aux;
         }
-}
-}
+    }
+ }
+
+
