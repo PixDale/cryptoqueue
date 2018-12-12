@@ -21,7 +21,7 @@ namespace CryptoQueue
 
             do
             {
-                Console.WriteLine("Escolha uma opção:\n[1] - Criptografa uma Mensagem.\n[2] - Descriptografar uma Mensagem.\n[3] - Sair\nEscolha: ");
+                Console.WriteLine("Escolha uma opção:\n[1] - Criptografar uma Mensagem.\n[2] - Descriptografar uma Mensagem.\n[3] - Sair\nEscolha: ");
                 op = Convert.ToInt32(Console.ReadLine());
                 switch (op)
                 {
