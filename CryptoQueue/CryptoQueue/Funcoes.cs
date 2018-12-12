@@ -80,7 +80,7 @@ namespace CryptoQueue
             }
             int giro = chave - 65;
             filaChave.Girar(giro);
-            for(int j = 0; j<tam; j++)
+           
           
 
             //Prencher a fila mensagem com a msg
