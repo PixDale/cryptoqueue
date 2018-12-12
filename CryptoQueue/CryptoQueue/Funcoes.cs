@@ -61,9 +61,8 @@ namespace CryptoQueue
             return result;
         }
 
-        public static string Criptografar(string msg, int chave)
+        public static string Criptografar(string msg, int chave, int tam)
         {
-            int tam = msg.Length;
             FilaCircular filaChave = new FilaCircular();
             FilaCircular filaMensagem = new FilaCircular();
             int[] vetorXored = new int[tam];
@@ -76,15 +75,19 @@ namespace CryptoQueue
                 {
                     aux = 0;
                 }
+                
                 filaChave.Adicionar((Char)(65+aux));
             }
             int giro = chave - 65;
             filaChave.Girar(giro);
+            for(int j = 0; j<tam; j++)
+          
 
             //Prencher a fila mensagem com a msg
             for(int i=0; i<msg.Length; i++)
             {
                 filaMensagem.Adicionar(msg[i]);
+                
             }
 
 
@@ -94,11 +97,13 @@ namespace CryptoQueue
                 int letra = (int)filaChave.getNode(i) ^ (int)filaMensagem.getNode(i);
 
                 vetorXored[i]= letra;
+               
             }
             uint[] vetorXoredFib = new uint[tam];
             for(int i=0; i<tam; i++)
             {
                 vetorXoredFib[i] = DecToFibFormat((uint)vetorXored[i]);
+                
             }
             foreach(int i in vetorXoredFib)
             {
@@ -109,22 +114,22 @@ namespace CryptoQueue
             {
                 result[i] = filaMsgCriptografada.getNode(i);
             }
-            return FormatarCifraSaida(result);
+            return FormatarCifraSaida(result,msg.Length);
          }
-        
+
 
 
         public static string Descriptografar(string msgCripto, int chave)
         {
             int[] msg = FormatarCifraEntrada(msgCripto);
-            int tam = msg.Length;
+            int tam = msg[msg.Length-1];
             FilaCircular filaChave = new FilaCircular();
             FilaCircular filaMsgCriptografada = new FilaCircular();
             int[] vetorXored = new int[tam];
             int[] vetorDesXored = new int[tam];
 
             //Preencher a fila chave com as letras do alfabeto
-            for (int i = 0, aux = 0; i < tam; i++, aux++)
+            for (int i = 0, aux = 0; i < msg.Length - 1; i++, aux++)
             {
                 if (aux > 25)
                 {
@@ -146,9 +151,10 @@ namespace CryptoQueue
                 int letra = (int)filaChave.getNode(i) ^ vetorXored[i];
 
                 vetorDesXored[i] = letra;
+               
             }
             FilaCircular mensagemFinal = new FilaCircular();
-            foreach(int i in vetorDesXored)
+            foreach (int i in vetorDesXored)
             {
                 mensagemFinal.Adicionar((char)i);
             }
@@ -156,22 +162,7 @@ namespace CryptoQueue
             return new string(mensagemFinal.Items());
 
         }
-        /*
-        static string ConsertaCaminho(string caminho){  
-            string aux = "";
-            foreach (char c in caminho) {
-                if(c.Equals('\\')) {
-                    aux += '/';
-                } else {
-                    aux += c;
-                } 
-            }
-            if (aux[aux.Length - 1].Equals('/')) {
-                aux.Remove(aux.Length - 1);
-            }
-            return aux;
-        }
-        */
+    
         public static int ContarDigitos (int num)
         {
             if (num / 10000 >= 1)
@@ -187,7 +178,7 @@ namespace CryptoQueue
 
         }
 
-        public static string FormatarCifraSaida(int[] vet)
+        public static string FormatarCifraSaida(int[] vet, int tamanho)
         {
             string saida = "";
             for (int i = 0; i< vet.Length; i++)
@@ -195,6 +186,8 @@ namespace CryptoQueue
                 saida += ContarDigitos(vet[i]);
                 saida += vet[i];
             }
+            saida += ContarDigitos(tamanho);
+            saida += tamanho;
 
             return saida;
         }
